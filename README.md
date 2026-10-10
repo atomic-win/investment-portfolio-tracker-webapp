@@ -14,7 +14,7 @@ A client-heavy SPA for tracking investment portfolios, built with TanStack Start
 | Bundler       | Vite 8                                           |
 | Styling       | Tailwind CSS 4 + shadcn/ui                       |
 | Forms         | react-hook-form + zod                            |
-| Charts        | Recharts                                         |
+| Charts        | TanStack Charts (`@tanstack/charts/react`)        |
 | Auth          | Google OAuth (`@react-oauth/google`)             |
 | Package mgr   | npm                                             |
 
