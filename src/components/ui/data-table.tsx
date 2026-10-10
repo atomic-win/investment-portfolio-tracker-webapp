@@ -13,11 +13,11 @@ import {
 	useReactTable,
 	type VisibilityState,
 } from "@tanstack/react-table";
+import { cn } from "cn";
 import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
-
 import { Button } from "@/components/ui/button";
 import { DataTablePagination } from "@/components/ui/data-table-pagination";
 import {
@@ -32,7 +32,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
 	id: string;

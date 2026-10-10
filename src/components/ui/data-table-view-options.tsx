@@ -1,6 +1,6 @@
 import type { Table } from "@tanstack/react-table";
+import { cn } from "cn";
 import { Settings2Icon } from "lucide-react";
-
 import { buttonVariants } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -11,7 +11,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
 
 interface DataTableViewOptionsProps<TData> {
 	table: Table<TData>;

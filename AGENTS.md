@@ -88,7 +88,7 @@ src/
 │   ├── use-log-out-mutation.ts
 │   └── users.ts               # useUserQuery, useUpdateUserMutation
 ├── lib/
-│   └── utils.ts               # cn() and shared utilities
+│   └── utils.ts               # Shared display utilities
 ├── types.ts                   # Domain enums and types
 ├── router.tsx                 # Router factory + query client setup
 └── routeTree.gen.ts           # Auto-generated — do NOT edit
@@ -178,6 +178,7 @@ The shared `DataTable` component (`src/components/ui/data-table.tsx`) supports s
 ## Code Style & Conventions
 
 - **Formatter**: Biome — tabs for indentation, double quotes for strings
+- **Class names**: Import `{ cn }` directly from `"cn"`, not from `@/lib/utils`.
 - **Lint**: Biome recommended rules
 - **TypeScript**: strict mode, `verbatimModuleSyntax` enabled — always use `import type` for type-only imports
 - **File naming**: kebab-case for all source files (e.g., `with-asset-items.tsx`, `use-access-token.ts`)

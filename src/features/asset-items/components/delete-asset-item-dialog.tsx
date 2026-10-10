@@ -1,3 +1,4 @@
+import { cn } from "cn";
 import { Trash2Icon } from "lucide-react";
 import type React from "react";
 import CurrencyAmount from "@/components/currency-amount";
@@ -15,7 +16,6 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 import { useDeleteAssetItemMutation } from "@/features/asset-items/hooks/asset-items";
 import {
-	cn,
 	displayAssetClassText,
 	displayAssetTypeText,
 	displayPercentage,
