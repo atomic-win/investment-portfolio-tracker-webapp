@@ -191,7 +191,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 					aspectRatio={16 / 9}
 					className="mt-2 text-xs"
 				/>
-				<ChartLegend config={chartConfig} className="grid-cols-4" />
+				<ChartLegend config={chartConfig} />
 			</CardContent>
 		</Card>
 	);

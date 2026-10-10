@@ -87,7 +87,7 @@ function PortfolioChart<TPortfolio extends Portfolio>({
 					initialWidth={320}
 					className="text-xs"
 				/>
-				<ChartLegend config={chartConfig} className="grid-cols-2" />
+				<ChartLegend config={chartConfig} />
 			</CardContent>
 		</Card>
 	);
