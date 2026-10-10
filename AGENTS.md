@@ -36,7 +36,7 @@ npm run format       # Biome format only
 | Bundler       | Vite 8                                                    |
 | Styling       | Tailwind CSS 4 + shadcn/ui                                |
 | Forms         | react-hook-form + zod validation schemas                  |
-| Charts        | Recharts                                                  |
+| Charts        | TanStack Charts (`@tanstack/charts/react`)                 |
 | Auth          | Google OAuth via `@react-oauth/google`                    |
 | Package mgr   | npm                                                      |
 
@@ -174,6 +174,13 @@ The shared `DataTable` component (`src/components/ui/data-table.tsx`) supports s
 - **`DataTableFacetedFilter`** — internal component in `data-table-toolbar.tsx` using `Command` (cmdk) inside a `Popover` for searchable multi-select.
 - **Important**: when `filterFn` is not needed (text filters), do **not** set it — omitting it lets TanStack Table use its default `includesString` filter. Explicitly setting `filterFn: undefined` disables filtering.
 - **`accessorKey`** must match the actual data property name for filtering to work (e.g., use `"name"` not `"transactionName"` when the data field is `name`).
+
+### Charts
+
+- Memoized TanStack Charts definitions live in `src/features/portfolio/lib/charts.ts`: allocation donuts use `pie` + `radialArc` inside `polar`; trends use `lineY` with grouped date tooltips.
+- Use `@tanstack/charts/react` for the responsive SVG host. Shared theme tokens and HTML legends live in `src/components/ui/chart.tsx`.
+- Preserve missing observations as line gaps. Currency, percentage, ratio formatting, and optional monetary totals are supplied by the trends section.
+- Import optional capabilities from exact package subpaths. `d3-scale` supplies calendar-aware time scales and `d3-shape` supplies monotone curves.
 
 ## Code Style & Conventions
 

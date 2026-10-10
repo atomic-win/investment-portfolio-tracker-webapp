@@ -4,6 +4,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.ts-chart-host {
+	--ts-chart-tooltip-background: var(--background);
+	--ts-chart-tooltip-color: var(--foreground);
+	--ts-chart-tooltip-border: 1px solid var(--border);
+	--ts-chart-tooltip-border-radius: var(--radius);
+}
+
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);

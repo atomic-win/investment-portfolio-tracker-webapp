@@ -1,14 +1,11 @@
-import { Pie, PieChart } from "recharts";
-
+import { Chart } from "@tanstack/charts/react";
+import { useMemo } from "react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { type ChartConfig, ChartLegend } from "@/components/ui/chart";
 import {
-	type ChartConfig,
-	ChartContainer,
-	ChartLegend,
-	ChartLegendContent,
-	ChartTooltip,
-	ChartTooltipContent,
-} from "@/components/ui/chart";
+	createAllocationChart,
+	createPortfolioChartConfig,
+} from "@/features/portfolio/lib/charts";
 import type { Portfolio } from "@/types";
 
 export default function PortfolioCharts<TPortfolio extends Portfolio>({
@@ -18,20 +15,10 @@ export default function PortfolioCharts<TPortfolio extends Portfolio>({
 	portfolios: TPortfolio[];
 	labelFn: (portfolio: TPortfolio) => string;
 }) {
-	const chartConfig = portfolios
-		.sort((a, b) => a.investedValuePercent - b.investedValuePercent)
-		.reverse()
-		.reduce(
-			(acc, portfolio, i) => ({
-				// biome-ignore lint/performance/noAccumulatingSpread: we need to accumulate the config for all portfolios
-				...acc,
-				[portfolio.id]: {
-					label: labelFn(portfolio),
-					color: `var(--chart-${i + 1})`,
-				},
-			}),
-			{},
-		) satisfies ChartConfig;
+	const chartConfig = useMemo(
+		() => createPortfolioChartConfig(portfolios, labelFn),
+		[portfolios, labelFn],
+	);
 
 	return (
 		<div className="grid grid-cols-2 gap-2 mb-2">
@@ -62,63 +49,23 @@ function PortfolioChart<TPortfolio extends Portfolio>({
 	title: string;
 	valuePercentFn: (portfolio: TPortfolio) => number;
 }) {
-	const chartData = portfolios.map((portfolio) => ({
-		id: portfolio.id,
-		data: parseFloat(valuePercentFn(portfolio).toFixed(2)),
-		fill: `var(--color-${portfolio.id})`,
-	}));
+	const definition = useMemo(
+		() => createAllocationChart(portfolios, chartConfig, valuePercentFn),
+		[portfolios, chartConfig, valuePercentFn],
+	);
 
 	return (
-		<Card className="m-auto rounded-lg w-full">
+		<Card className="m-auto rounded-lg w-full min-w-0">
 			<CardTitle className="text-center m-2 text-base">{title}</CardTitle>
 			<CardContent className="p-2">
-				<ChartContainer
-					config={chartConfig}
-					className="mx-auto aspect-square w-full"
-				>
-					<PieChart>
-						<ChartTooltip
-							content={
-								<ChartTooltipContent
-									hideLabel
-									className="w-full"
-									formatter={(value, name) => (
-										<>
-											<div
-												className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
-												style={
-													{
-														"--color-bg": `var(--color-${name})`,
-													} as React.CSSProperties
-												}
-											/>
-											{chartConfig[name as keyof typeof chartConfig]?.label ||
-												name}
-											<div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
-												{value}
-												<span className="font-normal text-muted-foreground">
-													%
-												</span>
-											</div>
-										</>
-									)}
-								/>
-							}
-							cursor={false}
-						/>
-						<Pie
-							data={chartData}
-							dataKey="data"
-							nameKey="id"
-							innerRadius={40}
-							width="100%"
-						/>
-						<ChartLegend
-							content={<ChartLegendContent />}
-							className="grid grid-cols-2 gap-2 p-0"
-						/>
-					</PieChart>
-				</ChartContainer>
+				<Chart
+					definition={definition}
+					ariaLabel={title}
+					aspectRatio={1}
+					initialWidth={320}
+					className="text-xs"
+				/>
+				<ChartLegend config={chartConfig} className="grid-cols-2" />
 			</CardContent>
 		</Card>
 	);
