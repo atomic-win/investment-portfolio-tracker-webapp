@@ -5,6 +5,8 @@ import {
 	createAllocationChart,
 	createPortfolioChartConfig,
 } from "@/features/portfolio/lib/charts";
+import { useUserQuery } from "@/hooks/users";
+import { displayCurrencyAmountText } from "@/lib/utils";
 import type { Portfolio } from "@/types";
 
 export default function PortfolioCharts<TPortfolio extends Portfolio>({
@@ -14,7 +16,20 @@ export default function PortfolioCharts<TPortfolio extends Portfolio>({
 	portfolios: TPortfolio[];
 	labelFn: (portfolio: TPortfolio) => string;
 }) {
+	const { data: user, isFetching, error } = useUserQuery();
+	if (isFetching || error || !user) {
+		return null;
+	}
+
 	const chartConfig = createPortfolioChartConfig(portfolios, labelFn);
+	const formatAmount = (amount: number) =>
+		displayCurrencyAmountText(
+			user.preferredLocale,
+			user.preferredCurrency,
+			amount,
+			"compact",
+			2,
+		);
 
 	return (
 		<div className="grid grid-cols-2 gap-2 mb-2">
@@ -23,12 +38,16 @@ export default function PortfolioCharts<TPortfolio extends Portfolio>({
 				chartConfig={chartConfig}
 				title="Invested Value Allocation (%)"
 				valuePercentFn={(portfolio) => portfolio.investedValuePercent}
+				amountFn={(portfolio) => portfolio.investedValue}
+				formatAmount={formatAmount}
 			/>
 			<PortfolioChart
 				portfolios={portfolios}
 				chartConfig={chartConfig}
 				title="Current Value Allocation (%)"
 				valuePercentFn={(portfolio) => portfolio.currentValuePercent}
+				amountFn={(portfolio) => portfolio.currentValue}
+				formatAmount={formatAmount}
 			/>
 		</div>
 	);
@@ -39,16 +58,22 @@ function PortfolioChart<TPortfolio extends Portfolio>({
 	chartConfig,
 	title,
 	valuePercentFn,
+	amountFn,
+	formatAmount,
 }: {
 	portfolios: TPortfolio[];
 	chartConfig: ChartConfig;
 	title: string;
 	valuePercentFn: (portfolio: TPortfolio) => number;
+	amountFn: (portfolio: TPortfolio) => number;
+	formatAmount: (amount: number) => string;
 }) {
 	const definition = createAllocationChart(
 		portfolios,
 		chartConfig,
 		valuePercentFn,
+		amountFn,
+		formatAmount,
 	);
 
 	return (

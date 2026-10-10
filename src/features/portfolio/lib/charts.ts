@@ -32,6 +32,8 @@ export function createAllocationChart<TPortfolio extends Portfolio>(
 	portfolios: TPortfolio[],
 	config: ChartConfig,
 	valueFn: (portfolio: TPortfolio) => number,
+	amountFn: (portfolio: TPortfolio) => number,
+	formatAmount: (amount: number) => string,
 ) {
 	const byId = new Map(
 		portfolios.map((portfolio) => [portfolio.id, portfolio]),
@@ -39,7 +41,13 @@ export function createAllocationChart<TPortfolio extends Portfolio>(
 	const rows = Object.keys(config).flatMap((id) => {
 		const portfolio = byId.get(id);
 		return portfolio
-			? [{ id, value: Number(valueFn(portfolio).toFixed(2)) }]
+			? [
+					{
+						id,
+						value: Number(valueFn(portfolio).toFixed(2)),
+						amount: amountFn(portfolio),
+					},
+				]
 			: [];
 	});
 
@@ -77,7 +85,7 @@ export function createAllocationChart<TPortfolio extends Portfolio>(
 			content: (points) => ({
 				rows: points.map(({ datum, color }) => ({
 					label: config[datum.id].label,
-					value: `${datum.value}%`,
+					value: `${formatAmount(datum.amount)} (${datum.value}%)`,
 					color,
 				})),
 			}),

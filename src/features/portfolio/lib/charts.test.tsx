@@ -7,14 +7,26 @@ import {
 import { focusGroupX } from "@tanstack/charts/focus";
 import { createChartTooltipContent } from "@tanstack/charts/tooltip/model";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import PortfolioCharts from "@/features/portfolio/components/portfolio-charts";
+import { displayCurrencyAmountText } from "@/lib/utils";
 import type { Portfolio } from "@/types";
 import {
 	createAllocationChart,
 	createPortfolioChartConfig,
 	createTrendsChart,
 } from "./charts";
+
+vi.mock("@/hooks/users", () => ({
+	useUserQuery: () => ({
+		data: { preferredLocale: "en-US", preferredCurrency: "USD" },
+		isFetching: false,
+		error: null,
+	}),
+}));
+
+const formatAmount = (amount: number) =>
+	displayCurrencyAmountText("en-US", "USD", amount, "compact", 2);
 
 function portfolio(
 	id: string,
@@ -61,6 +73,8 @@ describe("allocation charts", () => {
 			allocations,
 			config,
 			(row) => row.investedValuePercent,
+			(row) => row.investedValue,
+			formatAmount,
 		);
 		const scene = createChartScene(definition, { width, height: width });
 		expect(allocations.map(({ id }) => id)).toEqual(originalOrder);
@@ -77,7 +91,7 @@ describe("allocation charts", () => {
 			rows: [
 				{
 					label: "Portfolio large",
-					value: "66.67%",
+					value: "$100 (66.67%)",
 					color: config.large.color,
 				},
 			],
@@ -92,9 +106,21 @@ describe("allocation charts", () => {
 			allocations,
 			config,
 			(row) => row.currentValuePercent,
+			(row) => row.currentValue,
+			formatAmount,
 		);
 		const scene = createChartScene(definition, { width: 320, height: 320 });
 		expect(scene.points.map(({ datum }) => datum.value)).toEqual([75, 25]);
+		expect(
+			createChartTooltipContent(
+				[scene.points[0]],
+				scene,
+				false,
+				definition.tooltip,
+			),
+		).toMatchObject({
+			rows: [{ label: "Portfolio large", value: "$120 (75%)" }],
+		});
 		const markup = renderToStaticMarkup(
 			<PortfolioCharts portfolios={allocations} labelFn={label} />,
 		);
@@ -233,7 +259,13 @@ it("renders empty and all-zero allocations and trends without invalid geometry",
 		const config = createPortfolioChartConfig(rows, label);
 		for (const scene of [
 			createChartScene(
-				createAllocationChart(rows, config, (row) => row.investedValuePercent),
+				createAllocationChart(
+					rows,
+					config,
+					(row) => row.investedValuePercent,
+					(row) => row.investedValue,
+					formatAmount,
+				),
 				{ width: 320, height: 240 },
 			),
 			createChartScene(
