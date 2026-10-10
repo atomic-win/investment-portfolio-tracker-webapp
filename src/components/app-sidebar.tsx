@@ -1,4 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
+import { cn } from "cn";
 import { DollarSignIcon } from "lucide-react";
 import { Suspense } from "react";
 import AccountMenu from "@/components/account-menu";
@@ -16,7 +17,6 @@ import {
 	SidebarMenuItem,
 	SidebarRail,
 } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
 
 const data = [
 	{ title: "Portfolio", url: "/portfolio" },

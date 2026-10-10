@@ -1,3 +1,4 @@
+import { cn } from "cn";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import { buttonVariants } from "@/components/ui/button";
@@ -7,7 +8,6 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 
 export function DatePicker({
 	date,

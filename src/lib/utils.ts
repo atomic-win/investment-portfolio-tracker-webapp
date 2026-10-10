@@ -1,7 +1,5 @@
 import { AssetClass, AssetType } from "@/types";
 
-export { cn } from "cn";
-
 export function displayCurrencyAmountText(
 	locale: string,
 	currency: string,

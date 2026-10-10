@@ -1,6 +1,6 @@
 import type { Column, Table } from "@tanstack/react-table";
+import { cn } from "cn";
 import { CheckIcon, PlusCircleIcon, XIcon } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +19,6 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 
 export type DataTableFilterConfig =
 	| {

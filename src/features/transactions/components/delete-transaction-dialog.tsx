@@ -1,6 +1,6 @@
+import { cn } from "cn";
 import { Trash2Icon } from "lucide-react";
 import type React from "react";
-
 import CurrencyAmount from "@/components/currency-amount";
 import {
 	AlertDialog,
@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { buttonVariants } from "@/components/ui/button";
 import { useDeleteTransactionMutation } from "@/features/transactions/hooks/transactions";
-import { cn } from "@/lib/utils";
 import type { AssetItemPortfolio, Transaction } from "@/types";
 
 export default function DeleteTransactionDialog({

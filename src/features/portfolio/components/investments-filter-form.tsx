@@ -1,4 +1,5 @@
 import { useNavigate, useSearch } from "@tanstack/react-router";
+import { cn } from "cn";
 import { SlidersHorizontalIcon } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
@@ -11,7 +12,7 @@ import {
 	FieldSeparator,
 	FieldSet,
 } from "@/components/ui/field";
-import { cn, displayAssetClassText, displayAssetTypeText } from "@/lib/utils";
+import { displayAssetClassText, displayAssetTypeText } from "@/lib/utils";
 import { AssetClass, type AssetItem, AssetType } from "@/types";
 
 export default function InvestmentsFilterForm({

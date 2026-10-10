@@ -1,3 +1,4 @@
+import { cn } from "cn";
 import { ChevronRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -12,7 +13,6 @@ import {
 	SidebarMenu,
 } from "@/components/ui/sidebar";
 import { useUpdateUserMutation, useUserQuery } from "@/hooks/users";
-import { cn } from "@/lib/utils";
 import { Currency, Locale } from "@/types";
 
 export default function SettingsSidebarGroup() {
