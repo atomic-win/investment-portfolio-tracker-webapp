@@ -1,5 +1,6 @@
 import { useQueries } from "@tanstack/react-query";
 
+import { useDemoMode } from "@/hooks/use-demo-mode";
 import { usePrimalApiClient } from "@/hooks/use-primal-api-client";
 import type { AssetItem, Valuation } from "@/types";
 
@@ -10,6 +11,8 @@ export default function useValuationsQueries(
 	idSelector: (assetItem: AssetItem) => string,
 ) {
 	const primalApiClient = usePrimalApiClient();
+	const [demoModeFactor] = useDemoMode();
+	const multiplier = demoModeFactor ?? 1;
 	assetItemIds = (assetItemIds || []).sort();
 	assetItems = assetItems || [];
 
@@ -34,13 +37,12 @@ export default function useValuationsQueries(
 			},
 			enabled: !!currency && assetItemIds.length > 0 && assetItems.length > 0,
 			select: (valuations: Valuation[]) =>
-				valuations.map(
-					(valuation) =>
-						({
-							...valuation,
-							id,
-						}) as Valuation,
-				),
+				valuations.map((valuation) => ({
+					...valuation,
+					id,
+					investedValue: valuation.investedValue * multiplier,
+					currentValue: valuation.currentValue * multiplier,
+				})),
 		})),
 	});
 }

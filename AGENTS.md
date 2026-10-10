@@ -83,6 +83,7 @@ src/
 │   └── ...                    # Other shared components
 ├── hooks/                     # Shared hooks
 │   ├── use-access-token.ts    # localStorage-backed access token
+│   ├── use-demo-mode.ts       # localStorage-backed valuation demo factor
 │   ├── use-primal-api-client.ts # Axios instance with auth interceptor
 │   ├── use-log-in-mutation.ts
 │   ├── use-log-out-mutation.ts
@@ -142,6 +143,13 @@ Each feature has its own hooks file exporting query/mutation hooks:
 - `src/features/portfolio/hooks/valuations.ts` — `useValuationsQueries` (default export, uses `useQueries` for parallel fetching)
 
 Query key conventions: `["assetitems", ...]`, `["valuations", ...]`, `["users", "me"]`
+
+### Demo Mode
+
+- The sidebar Settings button toggles demo mode: outline "Turn Demo Mode On" when off, destructive "Turn Demo Mode Off" with an explanatory note when on.
+- `useDemoMode()` uses `useLocalStorage`, like `useAccessToken()`, to store `demoModeFactor`. `null` means off; enabling generates one random factor in `[0, 0.1)`, including valid zero, retained across navigation and reloads until toggled off.
+- `useValuationsQueries` scales only `investedValue` and `currentValue` in its query selectors. API responses and persisted query data stay unscaled; transactions and editing are unaffected. This is display scaling, not data anonymization.
+- Allocation percentages use the actual total, even below one; zero totals yield zero percentages.
 
 ### API Client
 
