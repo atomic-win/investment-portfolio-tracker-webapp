@@ -72,6 +72,7 @@ export function createAllocationChart<TPortfolio extends Portfolio>(
 		theme: chartTheme,
 		tooltip: {
 			use: tooltip,
+			className: "portfolio-chart-tooltip",
 			sticky: false,
 			content: (points) => ({
 				rows: points.map(({ datum, color }) => ({
@@ -164,6 +165,9 @@ export function createTrendsChart<TPortfolio extends Portfolio>(
 		maxFocusDistance: Number.POSITIVE_INFINITY,
 		tooltip: {
 			use: tooltip,
+			className: showTotal
+				? "portfolio-chart-tooltip portfolio-chart-tooltip--total"
+				: "portfolio-chart-tooltip",
 			sticky: false,
 			sort: "color-domain",
 			content: (points) => ({
