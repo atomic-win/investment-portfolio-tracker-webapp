@@ -177,7 +177,7 @@ The shared `DataTable` component (`src/components/ui/data-table.tsx`) supports s
 
 ### Charts
 
-- Memoized TanStack Charts definitions live in `src/features/portfolio/lib/charts.ts`: allocation donuts use `pie` + `radialArc` inside `polar`; trends use `lineY` with grouped date tooltips.
+- TanStack Charts definition builders live in `src/features/portfolio/lib/charts.ts` and are called directly during rendering: allocation donuts use `pie` + `radialArc` inside `polar`; trends use `lineY` with grouped date tooltips.
 - Use `@tanstack/charts/react` for the responsive SVG host. Shared theme tokens and HTML legends live in `src/components/ui/chart.tsx`.
 - Preserve missing observations as line gaps. Currency, percentage, ratio formatting, and optional monetary totals are supplied by the trends section.
 - Import optional capabilities from exact package subpaths. `d3-scale` supplies calendar-aware time scales and `d3-shape` supplies monotone curves.

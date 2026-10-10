@@ -1,6 +1,5 @@
 import { Chart } from "@tanstack/charts/react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ChartConfig, ChartLegend } from "@/components/ui/chart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -40,15 +39,15 @@ export default function withPortfolioTrendsSection<
 
 		const search = useSearch({ strict: false }) as Record<string, unknown>;
 		const navigate = useNavigate();
-		const chartConfig = useMemo(
-			() =>
-				createPortfolioChartConfig(filterLatestPortfolios(portfolios), labelFn),
-			[portfolios],
-		);
 
 		if (isUserFetching || error || !user) {
 			return null;
 		}
+
+		const chartConfig = createPortfolioChartConfig(
+			filterLatestPortfolios(portfolios),
+			labelFn,
+		);
 
 		const { preferredCurrency, preferredLocale } = user;
 		const activeTrendType =
@@ -168,16 +167,12 @@ function TrendsChart<TPortfolio extends Portfolio>({
 	yAxisFormat: (value: number) => string;
 	showTotalInTooltip: boolean;
 }) {
-	const definition = useMemo(
-		() =>
-			createTrendsChart(
-				portfolios,
-				chartConfig,
-				valueFn,
-				yAxisFormat,
-				showTotalInTooltip,
-			),
-		[portfolios, chartConfig, valueFn, yAxisFormat, showTotalInTooltip],
+	const definition = createTrendsChart(
+		portfolios,
+		chartConfig,
+		valueFn,
+		yAxisFormat,
+		showTotalInTooltip,
 	);
 
 	return (

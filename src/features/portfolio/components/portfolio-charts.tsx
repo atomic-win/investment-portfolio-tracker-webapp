@@ -1,5 +1,4 @@
 import { Chart } from "@tanstack/charts/react";
-import { useMemo } from "react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { type ChartConfig, ChartLegend } from "@/components/ui/chart";
 import {
@@ -15,10 +14,7 @@ export default function PortfolioCharts<TPortfolio extends Portfolio>({
 	portfolios: TPortfolio[];
 	labelFn: (portfolio: TPortfolio) => string;
 }) {
-	const chartConfig = useMemo(
-		() => createPortfolioChartConfig(portfolios, labelFn),
-		[portfolios, labelFn],
-	);
+	const chartConfig = createPortfolioChartConfig(portfolios, labelFn);
 
 	return (
 		<div className="grid grid-cols-2 gap-2 mb-2">
@@ -49,9 +45,10 @@ function PortfolioChart<TPortfolio extends Portfolio>({
 	title: string;
 	valuePercentFn: (portfolio: TPortfolio) => number;
 }) {
-	const definition = useMemo(
-		() => createAllocationChart(portfolios, chartConfig, valuePercentFn),
-		[portfolios, chartConfig, valuePercentFn],
+	const definition = createAllocationChart(
+		portfolios,
+		chartConfig,
+		valuePercentFn,
 	);
 
 	return (
