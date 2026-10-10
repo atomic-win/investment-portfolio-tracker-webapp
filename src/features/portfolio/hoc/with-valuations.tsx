@@ -107,10 +107,10 @@ function calculatePortfolio(valuations: Valuation[]): Portfolio[] {
 			type: PortfolioType.Unknown,
 			investedValue: valuation.investedValue,
 			investedValuePercent:
-				(valuation.investedValue / Math.max(totalInvestedValue, 1)) * 100,
+				(valuation.investedValue / (totalInvestedValue || 1)) * 100,
 			currentValue: valuation.currentValue,
 			currentValuePercent:
-				(valuation.currentValue / Math.max(totalCurrentValue, 1)) * 100,
+				(valuation.currentValue / (totalCurrentValue || 1)) * 100,
 			xirrPercent: valuation.xirrPercent,
 		};
 	});

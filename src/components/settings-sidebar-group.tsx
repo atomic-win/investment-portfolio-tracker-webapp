@@ -1,6 +1,6 @@
 import { cn } from "cn";
 import { ChevronRight } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -11,7 +11,9 @@ import {
 	SidebarGroup,
 	SidebarGroupLabel,
 	SidebarMenu,
+	SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useDemoMode } from "@/hooks/use-demo-mode";
 import { useUpdateUserMutation, useUserQuery } from "@/hooks/users";
 import { Currency, Locale } from "@/types";
 
@@ -87,7 +89,35 @@ export default function SettingsSidebarGroup() {
 						</DropdownMenuContent>
 					</DropdownMenu>
 				))}
+				<SidebarMenuItem>
+					<DemoButton />
+				</SidebarMenuItem>
 			</SidebarMenu>
 		</SidebarGroup>
+	);
+}
+
+function DemoButton() {
+	const [demoModeFactor, setDemoModeFactor] = useDemoMode();
+	const isDemoMode = demoModeFactor !== null;
+
+	return (
+		<>
+			<Button
+				type="button"
+				className="w-full cursor-pointer rounded-lg px-3 py-2"
+				variant={isDemoMode ? "destructive" : "outline"}
+				onClick={() =>
+					setDemoModeFactor(isDemoMode ? null : Math.random() * 0.1)
+				}
+			>
+				{isDemoMode ? "Turn Demo Mode Off" : "Turn Demo Mode On"}
+			</Button>
+			{isDemoMode && (
+				<p className="px-3 pt-2 text-xs text-muted-foreground">
+					Valuation amounts are scaled for demo.
+				</p>
+			)}
+		</>
 	);
 }
