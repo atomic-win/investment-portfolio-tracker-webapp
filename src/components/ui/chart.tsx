@@ -11,8 +11,8 @@ export const chartTheme = {
 
 export function ChartLegend({ config }: { config: ChartConfig }) {
 	return (
-		<div className="@container">
-			<ul className="mx-auto grid w-fit max-w-full grid-cols-2 gap-x-6 gap-y-2 text-xs @min-[32rem]:grid-cols-3">
+		<div className="@container mt-3 px-8">
+			<ul className="grid w-full grid-cols-[repeat(2,minmax(0,max-content))] justify-between gap-x-6 gap-y-2 text-xs @min-[32rem]:grid-cols-[repeat(3,minmax(0,max-content))]">
 				{Object.entries(config).map(([id, { label, color }]) => (
 					<li key={id} className="flex min-w-0 max-w-full items-center gap-1.5">
 						<span
